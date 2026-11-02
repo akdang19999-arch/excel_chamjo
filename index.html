@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상대참조와 절대참조</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .bounce-hover:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        .excel-table td, .excel-table th {
+            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        .excel-table th {
+            background-color: #e5e7eb;
+            font-weight: bold;
+        }
+        .key-btn {
+            box-shadow: 0 4px 0 #ca8a04;
+            transition: all 0.1s;
+        }
+        .key-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #ca8a04;
+        }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-8">
+        
+        <!-- 헤더 영역 -->
+        <header class="text-center py-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl shadow-lg text-white">
+            <h1 class="text-4xl md:text-5xl font-black mb-4">상대참조와 절대참조</h1>
+            <p class="text-xl font-bold opacity-90">수식을 복사할 때 셀 주소가 변하는 원리와 고정하는 방법</p>
+        </header>
+
+        <!-- 상대참조 vs 절대참조 비교 영역 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- 상대참조 (파란색) -->
+            <div class="bg-white rounded-2xl shadow-md p-6 border-t-8 border-blue-500 bounce-hover">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-4xl">🏃‍♂️</span>
+                    <h2 class="text-2xl font-bold text-blue-600">상대참조 (Relative)</h2>
+                </div>
+                <p class="text-lg font-semibold bg-blue-50 text-blue-800 p-3 rounded-lg mb-4">
+                    "수식을 복사한 위치만큼 참조하는 셀의 주소도 함께 이동합니다."
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 mb-6">
+                    <li>엑셀의 <b>기본 참조 방식</b>입니다.</li>
+                    <li>수식을 아래로 한 칸 복사하면, 참조하는 셀 주소도 아래로 한 칸 이동합니다.</li>
+                    <li><b>예시:</b> 앞사람을 따라 움직이는 형태 🦆</li>
+                </ul>
+                
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <p class="text-sm font-bold mb-2 text-center text-gray-600">끌어내릴 때 수식의 변화</p>
+                    <table class="w-full excel-table bg-white text-sm">
+                        <tr><th>입력 셀</th><th>수식</th></tr>
+                        <tr><td>C1</td><td class="text-blue-600 font-bold">=A1 + B1</td></tr>
+                        <tr><td colspan="2" class="text-xs text-gray-400">⬇️ 마우스로 쭉 끌어내리면 ⬇️</td></tr>
+                        <tr><td>C2</td><td class="text-blue-500">=A2 + B2</td></tr>
+                        <tr><td>C3</td><td class="text-blue-400">=A3 + B3</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 절대참조 (빨간색) -->
+            <div class="bg-white rounded-2xl shadow-md p-6 border-t-8 border-rose-500 bounce-hover">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-4xl">🔒</span>
+                    <h2 class="text-2xl font-bold text-rose-600">절대참조 (Absolute)</h2>
+                </div>
+                <p class="text-lg font-semibold bg-rose-50 text-rose-800 p-3 rounded-lg mb-4">
+                    "수식을 복사해도 참조하는 셀의 주소가 변하지 않고 고정됩니다."
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 mb-6">
+                    <li>수식을 복사해도 <b>주소가 고정되어 바뀌지 않습니다.</b></li>
+                    <li>열(알파벳)과 행(숫자) 앞에 <b>달러($)</b> 기호가 붙어 있으면 고정된 상태입니다.</li>
+                    <li><b>예시:</b> 무거운 닻을 내려 고정시킨 배 ⚓</li>
+                </ul>
+                
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <p class="text-sm font-bold mb-2 text-center text-gray-600">끌어내릴 때 수식의 변화</p>
+                    <table class="w-full excel-table bg-white text-sm">
+                        <tr><th>입력 셀</th><th>수식 (B1을 고정!)</th></tr>
+                        <tr><td>C1</td><td class="text-rose-600 font-bold">=A1 + <span class="bg-yellow-200">$B$1</span></td></tr>
+                        <tr><td colspan="2" class="text-xs text-gray-400">⬇️ 마우스로 쭉 끌어내리면 ⬇️</td></tr>
+                        <tr><td>C2</td><td class="text-rose-500">=A2 + <span class="bg-yellow-200">$B$1</span></td></tr>
+                        <tr><td>C3</td><td class="text-rose-400">=A3 + <span class="bg-yellow-200">$B$1</span></td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- F4 단축키 설명 영역 (가장 눈에 띄게 배치) -->
+        <div class="bg-yellow-100 border-4 border-yellow-400 rounded-3xl p-6 md:p-10 shadow-xl text-center relative overflow-hidden">
+            <!-- 배경 장식 -->
+            <div class="absolute -top-10 -right-10 text-9xl opacity-20 transform rotate-12">⌨️</div>
+            <div class="absolute -bottom-10 -left-10 text-9xl opacity-20 transform -rotate-12">💲</div>
+
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-4xl font-black text-yellow-800 mb-4">
+                    F4 키를 이용한 참조 방식 변경
+                </h2>
+                <p class="text-lg text-yellow-900 mb-8 font-bold">
+                    수식을 입력할 때 F4 키를 누르면 $ 기호가 자동으로 붙으며 참조 방식이 순차적으로 변경됩니다.
+                </p>
+
+                <!-- 인터랙티브 F4 시뮬레이터 -->
+                <div class="bg-white p-6 rounded-2xl shadow-inner max-w-2xl mx-auto border-2 border-yellow-200">
+                    <p class="text-gray-500 mb-4 text-sm">아래 'F4 키 누르기' 버튼을 눌러서 셀 주소가 어떻게 변하는지 확인해 보세요!</p>
+                    
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-6">
+                        <!-- 가짜 셀 주소 창 -->
+                        <div class="bg-gray-800 text-green-400 font-mono text-5xl p-4 rounded-xl w-48 text-center shadow-inner tracking-widest" id="cellDisplay">
+                            A1
+                        </div>
+                        
+                        <!-- 누르는 버튼 -->
+                        <button onclick="pressF4()" class="key-btn bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black text-2xl py-4 px-8 rounded-2xl flex items-center gap-2">
+                            <span>F4 키 누르기!</span> 👈
+                        </button>
+                    </div>
+
+                    <!-- 설명 박스 -->
+                    <div id="explanationBox" class="h-24 flex items-center justify-center bg-blue-50 border-2 border-blue-200 rounded-xl text-lg font-bold text-blue-800 p-4 transition-colors duration-300">
+                        상대참조: 수식을 복사하는 방향대로 주소가 이동합니다.
+                    </div>
+                </div>
+
+                <div class="mt-6 flex flex-wrap justify-center gap-3 text-sm font-bold text-yellow-800">
+                    <span class="bg-white/60 px-3 py-1 rounded-full">A1 (상대참조)</span> ➡️ 
+                    <span class="bg-white/60 px-3 py-1 rounded-full">$A$1 (절대참조)</span> ➡️ 
+                    <span class="bg-white/60 px-3 py-1 rounded-full">A$1 (혼합참조-행)</span> ➡️ 
+                    <span class="bg-white/60 px-3 py-1 rounded-full">$A1 (혼합참조-열)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 팁 & 마무리 -->
+        <footer class="bg-white rounded-2xl shadow p-6 text-center text-gray-600 border-l-4 border-emerald-500">
+            <h3 class="text-xl font-bold text-emerald-600 mb-2">💡 핵심 요약</h3>
+            <p><strong>"수식을 복사할 때 값이 변하면 안 되는 셀은 F4를 눌러 $(달러) 기호를 붙여 고정합니다."</strong></p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript 로직 -->
+    <script>
+        // F4 키 시뮬레이션을 위한 데이터 배열
+        const f4States = [
+            {
+                text: "A1",
+                explain: "상대참조: 수식을 복사하는 방향대로 주소가 이동합니다.",
+                bgColor: "bg-blue-50",
+                borderColor: "border-blue-200",
+                textColor: "text-blue-800"
+            },
+            {
+                text: "<span class='text-yellow-300'>$</span>A<span class='text-yellow-300'>$</span>1",
+                explain: "절대참조: 열(알파벳)과 행(숫자) 모두 고정되어 움직이지 않습니다.",
+                bgColor: "bg-rose-50",
+                borderColor: "border-rose-200",
+                textColor: "text-rose-800"
+            },
+            {
+                text: "A<span class='text-yellow-300'>$</span>1",
+                explain: "혼합참조(행 고정): 행(숫자)만 고정되어 위아래로는 변하지 않고, 좌우로만 변합니다.",
+                bgColor: "bg-purple-50",
+                borderColor: "border-purple-200",
+                textColor: "text-purple-800"
+            },
+            {
+                text: "<span class='text-yellow-300'>$</span>A1",
+                explain: "혼합참조(열 고정): 열(알파벳)만 고정되어 좌우로는 변하지 않고, 위아래로만 변합니다.",
+                bgColor: "bg-emerald-50",
+                borderColor: "border-emerald-200",
+                textColor: "text-emerald-800"
+            }
+        ];
+
+        let currentStateIndex = 0;
+
+        function pressF4() {
+            // 인덱스 증가 (4개 상태 무한 루프)
+            currentStateIndex = (currentStateIndex + 1) % f4States.length;
+            
+            const state = f4States[currentStateIndex];
+            const display = document.getElementById("cellDisplay");
+            const box = document.getElementById("explanationBox");
+
+            // 텍스트 업데이트
+            display.innerHTML = state.text;
+            box.innerHTML = state.explain;
+
+            // 색상 업데이트 (이전 클래스 제거 후 새 클래스 추가)
+            box.className = `h-24 flex items-center justify-center border-2 rounded-xl text-lg font-bold p-4 transition-colors duration-300 text-center ${state.bgColor} ${state.borderColor} ${state.textColor}`;
+        }
+    </script>
+</body>
+</html>
